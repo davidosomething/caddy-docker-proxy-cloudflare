@@ -1,3 +1,7 @@
+# ============================================================================
+# Builder
+# ============================================================================
+
 # Ideally you use the builder (a linux image) made for the specific caddy
 # version, but it can probably build patch versions, too, if a builder version
 # is missing.
@@ -15,8 +19,10 @@ RUN xcaddy build \
   --with github.com/caddy-dns/cloudflare \
   v${CADDY_VERSION}
 
-FROM caddy:${CADDY_VERSION}-alpine
+# ============================================================================
+# Runner
+# ============================================================================
 
+FROM caddy:${BUILDER_VERSION}-alpine
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
-
 CMD ["caddy", "docker-proxy"]
