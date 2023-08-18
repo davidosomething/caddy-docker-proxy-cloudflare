@@ -11,7 +11,7 @@ ARG BUILDER_VERSION=2.7.4
 FROM caddy:${BUILDER_VERSION}-builder-alpine AS builder
 
 # read by `xcaddy build` command
-ARG CADDY_VERSION=2.7.4
+ARG CADDY_VERSION=v2.7.4
 
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
