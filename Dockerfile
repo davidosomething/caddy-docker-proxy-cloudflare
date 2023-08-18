@@ -11,7 +11,7 @@ ARG BUILDER_VERSION=2.7.4
 ARG CADDY_VERSION=${BUILDER_VERSION}
 ARG CADDY_DOCKER_PROXY_VERSION=2.8.6
 
-FROM caddy:${BUILDER_VERSION}-builder AS builder
+FROM caddy:${BUILDER_VERSION}-builder-alpine AS builder
 
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
