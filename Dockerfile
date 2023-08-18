@@ -7,13 +7,14 @@
 # is missing.
 # E.g. we can use 2.7.2 builder to build 2.7.3
 # see https://github.com/caddyserver/caddy-docker/issues/307
-ARG BUILDER_VERSION=2.7.3
+ARG BUILDER_VERSION=2.7.4
+ARG CADDY_VERSION=${BUILDER_VERSION}
+ARG CADDY_DOCKER_PROXY_VERSION=2.8.6
+
 FROM caddy:${BUILDER_VERSION}-builder AS builder
 
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
-ARG CADDY_VERSION=2.7.3
-ARG CADDY_DOCKER_PROXY_VERSION=2.8.5
 RUN xcaddy build \
   --with github.com/lucaslorentz/caddy-docker-proxy/v2@v${CADDY_DOCKER_PROXY_VERSION} \
   --with github.com/caddy-dns/cloudflare \
