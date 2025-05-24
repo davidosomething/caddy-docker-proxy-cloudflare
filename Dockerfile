@@ -7,12 +7,12 @@
 # is missing.
 # E.g. we can use 2.7.2 builder to build 2.7.3
 # see https://github.com/caddyserver/caddy-docker/issues/307
-ARG BUILDER_VERSION=2.9.2
-FROM caddy:${BUILDER_VERSION}-builder-alpine AS builder
+FROM caddy:2-builder-alpine AS builder
 
 # read by `xcaddy build` command
-ARG CADDY_VERSION=v2.10.0
-
+ARG CADDY_VERSION=v2.10.0-alpine
+# hack to carry arg into next FROM
+ENV CADDY_VERSION=${CADDY_VERSION}
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
 RUN xcaddy build \
@@ -23,6 +23,6 @@ RUN xcaddy build \
 # Runner
 # ============================================================================
 
-FROM caddy:${BUILDER_VERSION}-alpine
+FROM caddy:${CADDY_VERSION}
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 CMD ["caddy", "docker-proxy"]

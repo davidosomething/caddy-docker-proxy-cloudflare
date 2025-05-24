@@ -1,4 +1,4 @@
-name: publish
+name: build and publish
 
 on:
   push:
@@ -10,23 +10,30 @@ env:
   VERSION: latest
 
 jobs:
-  publish-docker-image:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Build and push docker image
+        run: |
+          docker build . --tag "${REGISTRY}/${GITHUB_REPOSITORY}:${VERSION}"
+
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     permissions:
       contents: read
       packages: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push docker image
         run: |
-          docker build . --tag "${REGISTRY}/${GITHUB_REPOSITORY}:${VERSION}"
           docker push "${REGISTRY}/${GITHUB_REPOSITORY}:${VERSION}"
