@@ -22,6 +22,7 @@ jobs:
           docker build . --tag "${REGISTRY}/${GITHUB_REPOSITORY}:${VERSION}"
 
   publish:
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     permissions:

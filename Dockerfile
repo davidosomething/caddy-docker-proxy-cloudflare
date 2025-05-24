@@ -10,9 +10,7 @@
 FROM caddy:2-builder-alpine AS builder
 
 # read by `xcaddy build` command
-ARG CADDY_VERSION=v2.10.0-alpine
-# hack to carry arg into next FROM
-ENV CADDY_VERSION=${CADDY_VERSION}
+ARG CADDY_VERSION=v2.10.0
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
 RUN xcaddy build \
@@ -23,6 +21,6 @@ RUN xcaddy build \
 # Runner
 # ============================================================================
 
-FROM caddy:${CADDY_VERSION}
+FROM caddy:2.10.0-alpine
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 CMD ["caddy", "docker-proxy"]
