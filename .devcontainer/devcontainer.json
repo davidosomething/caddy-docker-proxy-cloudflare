@@ -1,0 +1,15 @@
+{
+  "name": "caddy-docker-proxy-dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "mounts": [
+    "source=/run/user/1000/podman/podman.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  "containerEnv": {
+    "DOCKER_HOST": "unix:///var/run/docker.sock"
+  },
+  "onCreateCommand": "apt-get update && apt-get install -y podman",
+  "postCreateCommand": "echo 'Dev container ready — podman available as docker'"
+}
