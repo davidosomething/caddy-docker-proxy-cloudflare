@@ -22,7 +22,9 @@ RUN xcaddy build \
 FROM docker.io/library/caddy:2.11.4-alpine
 
 # Create a non-root user to run Caddy (OWASP Docker Security Rule #7)
-RUN addgroup -S caddy && adduser -S -D -h /data/caddy -s /sbin/nologin -G caddy -g caddy caddy
+# Pin the caddy user to UID 1000 so bind-mounted host directories
+# can be chown'd once predictably. GID 1000 for the group as well.
+RUN addgroup -S -g 1000 caddy && adduser -S -D -u 1000 -h /data/caddy -s /sbin/nologin -G caddy -g caddy caddy
 
 # Copy the built binary from the builder stage
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
