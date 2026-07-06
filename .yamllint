@@ -1,0 +1,19 @@
+---
+extends: default
+rules:
+  comments:
+    ignore-shebangs: true
+    require-starting-space: true
+  document-start:
+    level: warning
+  empty-lines:
+    max-end: 1
+  line-length:
+    max: 120
+  truthy:
+    check-keys: false
+ignore: |
+  node_modules/
+  tmux/plugins/
+  zsh/.zinit/
+  pnpm-lock.yaml

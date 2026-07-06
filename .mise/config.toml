@@ -1,0 +1,4 @@
+[tools]
+devcontainer-cli = "latest"
+yamlfmt = "latest"
+yamllint = "latest"

@@ -1,0 +1,16 @@
+caddy-docker-proxy-cloudflare
+Copyright 2025 David O'Trakoun
+
+This product includes software developed by:
+
+  - Caddy (https://github.com/caddyserver/caddy)
+    Copyright Matthew Holt and Caddy contributors
+    Licensed under the Apache License, Version 2.0
+
+  - caddy-docker-proxy (https://github.com/lucaslorentz/caddy-docker-proxy)
+    Copyright Lucas Lorentz
+    Licensed under the MIT License
+
+  - caddy-dns/cloudflare (https://github.com/caddy-dns/cloudflare)
+    Copyright Caddy DNS contributors
+    Licensed under the Apache License, Version 2.0
