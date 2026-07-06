@@ -1,9 +1,9 @@
 ---
 # caddy-docker-proxy-cloudflare
 # Secure compose file following OWASP Docker Security guidelines.
-# The image already runs as non-root (USER caddy) and has
-# cap_net_bind_service on the binary, so ports 80/443 work
-# without a privileged container.
+# Runs as non-root (USER caddy) with CAP_NET_BIND_SERVICE
+# at the container level, so ports 80/443 work without a
+# privileged container.
 
 services:
   # ==========================================================================
@@ -43,11 +43,13 @@ services:
 
     # ------------------------------------------------------------------
     # OWASP: Drop all capabilities, add only what's needed.
-    # cap_net_bind_service is already set on the binary via setcap,
-    # so it works even with --cap-drop=ALL.
+    # CAP_NET_BIND_SERVICE lets Caddy bind to privileged ports (80, 443)
+    # while running as a non-root user inside the container.
     # ------------------------------------------------------------------
     cap_drop:
       - ALL
+    cap_add:
+      - CAP_NET_BIND_SERVICE
 
     # ------------------------------------------------------------------
     # OWASP: Read-only root filesystem with tmpfs for writable paths.

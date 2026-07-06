@@ -27,9 +27,11 @@ RUN addgroup -S caddy && adduser -S -D -h /data/caddy -s /sbin/nologin -G caddy 
 # Copy the built binary from the builder stage
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
-# Grant CAP_NET_BIND_SERVICE so Caddy can bind to privileged ports (80, 443)
-# without running as root
-RUN setcap cap_net_bind_service=+ep /usr/bin/caddy
+# Ensure the binary is executable and owned by root (runs as non-root caddy user)
+# Container-level CAP_NET_BIND_SERVICE is added in docker-compose instead of
+# setcap file capabilities, which can cause "operation not permitted" on SELinux
+# hosts when a non-root user executes a binary with security.capability xattrs.
+RUN chmod 755 /usr/bin/caddy
 
 # Ensure the caddy user owns its data and config directories
 RUN chown -R caddy:caddy /data/caddy /config/caddy /etc/caddy
