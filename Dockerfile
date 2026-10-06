@@ -8,7 +8,7 @@
 FROM docker.io/library/caddy:2.11.7-builder-alpine AS builder
 
 # read by `xcaddy build` command
-ARG CADDY_VERSION=v2.11.4
+ARG CADDY_VERSION=v2.11.7
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
 RUN xcaddy build \
