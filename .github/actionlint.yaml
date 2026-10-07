@@ -1,0 +1,6 @@
+# actionlint v1.7.12 predates the ubuntu-26.04 runner label (the runner image
+# was released after). Declare it as a known label so the runner-label rule
+# accepts it. Remove this file once an actionlint release includes the label.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04
