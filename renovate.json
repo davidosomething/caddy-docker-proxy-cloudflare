@@ -10,6 +10,22 @@
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+    {
+      "description": "Group caddy image tags with the Dockerfile ARG CADDY_VERSION",
+      "matchPackageNames": ["docker.io/library/caddy"],
+      "groupName": "caddy"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Keep ARG CADDY_VERSION in sync with the caddy FROM image tags",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": ["ARG CADDY_VERSION=v(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "docker.io/library/caddy",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
     }
   ]
 }
