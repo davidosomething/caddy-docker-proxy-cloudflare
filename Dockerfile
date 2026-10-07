@@ -5,10 +5,10 @@
 # Pinned to an exact Caddy version for reproducible builds.
 # Update the builder, runner, and ARG CADDY_VERSION together.
 # caddy-docker issue history: https://github.com/caddyserver/caddy-docker/issues/307
-FROM docker.io/library/caddy:2.11.4-builder-alpine AS builder
+FROM docker.io/library/caddy:2.11.7-builder-alpine AS builder
 
 # read by `xcaddy build` command
-ARG CADDY_VERSION=v2.11.4
+ARG CADDY_VERSION=v2.11.7
 # https://github.com/lucaslorentz/caddy-docker-proxy
 # https://github.com/caddy-dns/cloudflare
 RUN xcaddy build \
@@ -19,7 +19,7 @@ RUN xcaddy build \
 # Runner
 # ============================================================================
 
-FROM docker.io/library/caddy:2.11.4-alpine
+FROM docker.io/library/caddy:2.11.7-alpine
 
 # Create a non-root user to run Caddy (OWASP Docker Security Rule #7)
 # Pin the caddy user to UID 1000 so bind-mounted host directories
