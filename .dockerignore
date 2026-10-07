@@ -1,0 +1,9 @@
+# VCS and CI — never useful in the image, and .git bloats the build context
+.git
+.github
+.claude
+
+# Repo metadata — the image only needs the Dockerfile's build inputs
+*.md
+docker-compose.yaml
+renovate.json

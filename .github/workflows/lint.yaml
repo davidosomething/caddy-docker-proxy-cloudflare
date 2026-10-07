@@ -1,0 +1,52 @@
+---
+name: lint
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+# Cancel in-progress runs on the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: Lint GitHub Actions workflows
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Install actionlint and shellcheck
+        env:
+          ACTIONLINT_VERSION: 1.7.12
+          SHELLCHECK_VERSION: 0.11.0
+        run: |
+          curl -fsSL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin actionlint
+          curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJ
+          mv "shellcheck-v${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/
+          actionlint -version
+
+      # actionlint auto-detects shellcheck in PATH and lints `run:` scripts too
+      - name: Run actionlint
+        run: actionlint -color
+
+  compose-config:
+    name: Validate docker-compose.yaml
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Validate compose file
+        env:
+          # compose interpolates this required variable; a dummy value is
+          # enough for a structural validation
+          CLOUDFLARE_API_TOKEN: dummy-token-for-validation
+        run: docker compose -f docker-compose.yaml config -q

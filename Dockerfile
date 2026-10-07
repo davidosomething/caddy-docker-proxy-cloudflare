@@ -33,19 +33,19 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 # Container-level CAP_NET_BIND_SERVICE is added in docker-compose instead of
 # setcap file capabilities, which can cause "operation not permitted" on SELinux
 # hosts when a non-root user executes a binary with security.capability xattrs.
-RUN chmod 755 /usr/bin/caddy
-
-# Ensure the caddy user owns its data and config directories
-RUN chown -R caddy:caddy /data/caddy /config/caddy /etc/caddy
+# Then ensure the caddy user owns its data and config directories.
+RUN chmod 755 /usr/bin/caddy \
+    && chown -R caddy:caddy /data/caddy /config/caddy /etc/caddy
 
 # OCI image labels for provenance
 LABEL org.opencontainers.image.title="caddy-docker-proxy-cloudflare"
 LABEL org.opencontainers.image.description="Caddy with docker-proxy and Cloudflare DNS modules"
-LABEL org.opencontainers.image.source="https://github.com/caddy-dns/cloudflare"
+LABEL org.opencontainers.image.source="https://github.com/davidosomething/caddy-docker-proxy-cloudflare"
 LABEL org.opencontainers.image.vendor="davidosomething"
 
-# Drop privileges — all subsequent instructions run as the caddy user
-USER caddy
+# Drop privileges — all subsequent instructions run as the caddy user.
+# Numeric UID/GID so bind-mounted host directories resolve predictably (hadolint DL3066).
+USER 1000:1000
 
 # Health check via Caddy's admin API
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
